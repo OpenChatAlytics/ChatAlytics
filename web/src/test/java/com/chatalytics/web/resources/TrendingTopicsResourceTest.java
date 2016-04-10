@@ -36,7 +36,6 @@ public class TrendingTopicsResourceTest {
     @Before
     public void setUp() throws Exception {
         ChatAlyticsConfig config = new ChatAlyticsConfig();
-        config.persistenceUnitName = "chatalytics-web-test";
         config.timeZone = "America/New_York";
         dtZone = DateTimeZone.forID(config.timeZone);
 
