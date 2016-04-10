@@ -29,6 +29,7 @@ public class EntityDAOImplTest {
     @Before
     public void setUp() throws Exception {
         ChatAlyticsConfig config = new ChatAlyticsConfig();
+        config.persistenceUnitName = "chatalytics-db-test";
         underTest = new EntityDAOImpl(config);
         underTest.startAsync().awaitRunning();
 

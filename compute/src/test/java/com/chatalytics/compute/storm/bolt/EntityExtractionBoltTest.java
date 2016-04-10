@@ -38,7 +38,9 @@ public class EntityExtractionBoltTest {
     public void setUp() throws Exception {
         underTest = new EntityExtractionBolt();
         Map<String, String> confMap = Maps.newHashMapWithExpectedSize(1);
-        confMap.put(ConfigurationConstants.CHATALYTICS_CONFIG.txt, "apiRetries: 0");
+        confMap.put(ConfigurationConstants.CHATALYTICS_CONFIG.txt,
+                        "apiRetries: 0\n" +
+                        "persistenceUnitName: 'chatalytics-db-test'");
         underTest.prepare(confMap, mock(TopologyContext.class), mock(OutputCollector.class));
     }
 
