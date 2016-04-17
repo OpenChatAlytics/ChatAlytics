@@ -15,6 +15,9 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -41,6 +44,13 @@ public class ServerMain extends Application {
     public ServerMain(ChatAlyticsConfig config, RealtimeComputeClient realtimeComputeClient) {
         this.config = config;
         this.realtimeComputeClient = realtimeComputeClient;
+
+        // Sets up classpath scanning for Swagger + JAXRS
+        // Resources available at localhost:8080/swagger.json
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setBasePath("http://localhost:8080/api");
+        beanConfig.setResourcePackage("com.chatalytics.web.resources");
+        beanConfig.setScan(true);
     }
 
     public static void main(String[] args) throws Exception {
@@ -69,7 +79,8 @@ public class ServerMain extends Application {
     @Override
     public Set<Object> getSingletons() {
         return Sets.newHashSet(new TrendingTopicsResource(config),
-                               new TopEmojisResource(config));
+                               new TopEmojisResource(config),
+                               new ApiListingResource());
     }
 
     protected void startComputeClient() {
