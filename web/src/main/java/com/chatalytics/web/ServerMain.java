@@ -48,7 +48,8 @@ public class ServerMain extends Application {
         // Sets up classpath scanning for Swagger + JAXRS
         // Resources available at localhost:8080/swagger.json
         BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setBasePath("http://localhost:8080/api");
+        beanConfig.setHost("localhost:" + PORT);
+        beanConfig.setBasePath("/");
         beanConfig.setResourcePackage("com.chatalytics.web.resources");
         beanConfig.setScan(true);
     }
