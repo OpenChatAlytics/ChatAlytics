@@ -1,7 +1,8 @@
 package com.chatalytics.compute.storm.spout;
 
+import com.chatalytics.core.InputSourceType;
+import com.chatalytics.core.json.JsonObjectMapperFactory;
 import com.chatalytics.core.model.Message;
-import com.chatalytics.core.model.slack.json.SlackJsonModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
@@ -27,8 +28,7 @@ public class WebSocketMessageDecoder implements Decoder.Text<Message> {
 
     @Override
     public void init(EndpointConfig config) {
-        objMapper = new ObjectMapper();
-        objMapper.registerModule(new SlackJsonModule());
+        objMapper = JsonObjectMapperFactory.createObjectMapper(InputSourceType.SLACK);
     }
 
     @Override

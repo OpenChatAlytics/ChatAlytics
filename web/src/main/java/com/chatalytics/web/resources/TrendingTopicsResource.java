@@ -3,6 +3,7 @@ package com.chatalytics.web.resources;
 import com.chatalytics.compute.db.dao.ChatAlyticsDAOFactory;
 import com.chatalytics.compute.db.dao.IEntityDAO;
 import com.chatalytics.core.config.ChatAlyticsConfig;
+import com.chatalytics.core.json.JsonObjectMapperFactory;
 import com.chatalytics.web.utils.DateTimeUtils;
 import com.chatalytics.web.utils.ResourceUtils;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -51,7 +52,7 @@ public class TrendingTopicsResource {
     public TrendingTopicsResource(ChatAlyticsConfig config) {
         entityDao = ChatAlyticsDAOFactory.getEntityDAO(config);
         dtZone = DateTimeZone.forID(config.timeZone);
-        objectMapper = new ObjectMapper();
+        objectMapper = JsonObjectMapperFactory.createObjectMapper(config.inputType);
     }
 
     @POST

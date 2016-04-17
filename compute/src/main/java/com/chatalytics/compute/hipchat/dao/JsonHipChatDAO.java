@@ -3,10 +3,10 @@ package com.chatalytics.compute.hipchat.dao;
 import com.chatalytics.compute.chat.dao.AbstractJSONChatApiDAO;
 import com.chatalytics.compute.chat.dao.IChatApiDAO;
 import com.chatalytics.core.config.ChatAlyticsConfig;
+import com.chatalytics.core.json.JsonObjectMapperFactory;
 import com.chatalytics.core.model.Message;
 import com.chatalytics.core.model.Room;
 import com.chatalytics.core.model.User;
-import com.chatalytics.core.model.hipchat.json.HipChatJsonModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
@@ -54,8 +54,7 @@ public class JsonHipChatDAO extends AbstractJSONChatApiDAO {
         this.config = config;
         this.dtz = DateTimeZone.forID(config.timeZone);
         this.apiDateFormat = DateTimeFormat.forPattern(config.apiDateFormat).withZone(dtz);
-        this.objMapper = new ObjectMapper();
-        this.objMapper.registerModule(new HipChatJsonModule());
+        this.objMapper = JsonObjectMapperFactory.createObjectMapper(config.inputType);
     }
 
     /**

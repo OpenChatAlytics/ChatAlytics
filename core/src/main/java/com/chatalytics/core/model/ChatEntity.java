@@ -41,8 +41,7 @@ public class ChatEntity implements IMentionable {
     private String username;
     private String roomName;
 
-    public ChatEntity() {
-    }
+    protected ChatEntity() {} // for jackson
 
     public ChatEntity(String entityValue, int occurrences, DateTime mentionTime,
                       String username, String roomName) {

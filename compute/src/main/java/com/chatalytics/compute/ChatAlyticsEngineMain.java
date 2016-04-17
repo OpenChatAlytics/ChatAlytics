@@ -1,5 +1,7 @@
 package com.chatalytics.compute;
 
+import com.chatalytics.compute.realtime.ComputeRealtimeServer;
+import com.chatalytics.compute.realtime.ComputeRealtimeServerFactory;
 import com.chatalytics.compute.storm.ChatAlyticsService;
 import com.chatalytics.compute.storm.ChatAlyticsStormTopology;
 import com.chatalytics.compute.util.YamlUtils;
@@ -22,8 +24,11 @@ public class ChatAlyticsEngineMain {
 
         ChatAlyticsStormTopology chatTopology = new ChatAlyticsStormTopology(config.inputType);
 
-
-        ChatAlyticsService chatalyticsService = new ChatAlyticsService(chatTopology.get(), config);
+        ComputeRealtimeServer rtServer =
+            ComputeRealtimeServerFactory.createComputeRealtimeServer(config);
+        ChatAlyticsService chatalyticsService = new ChatAlyticsService(chatTopology.get(),
+                                                                       rtServer,
+                                                                       config);
         chatalyticsService.startAsync().awaitRunning();
 
     }

@@ -2,6 +2,7 @@ package com.chatalytics.compute.storm;
 
 import com.chatalytics.compute.storm.bolt.EmojiCounterBolt;
 import com.chatalytics.compute.storm.bolt.EntityExtractionBolt;
+import com.chatalytics.compute.storm.bolt.RealtimeBolt;
 import com.chatalytics.compute.storm.spout.HipChatMessageSpout;
 import com.chatalytics.compute.storm.spout.LocalTestSpout;
 import com.chatalytics.compute.storm.spout.SlackBackfillSpout;
@@ -50,6 +51,11 @@ public class ChatAlyticsStormTopology {
         // emoji bolt
         topologyBuilder.setBolt(EmojiCounterBolt.BOLT_ID, new EmojiCounterBolt())
                        .shuffleGrouping(inputSpoutId);
+
+        // realtime bolt
+        topologyBuilder.setBolt(RealtimeBolt.BOLT_ID, new RealtimeBolt())
+                       .shuffleGrouping(EmojiCounterBolt.BOLT_ID)
+                       .shuffleGrouping(EntityExtractionBolt.BOLT_ID);
 
         return topologyBuilder.createTopology();
     }

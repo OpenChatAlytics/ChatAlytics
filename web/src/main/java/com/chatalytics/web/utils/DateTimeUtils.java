@@ -39,7 +39,7 @@ public class DateTimeUtils {
                                    "Both start and end time date parameters cannot be null");
         Preconditions.checkArgument(dateTimeStr.length() == PARAMETER_WITH_DAY_DTF_STR.length() ||
             dateTimeStr.length() == PARAMETER_WITH_HOUR_DTF_STR.length(),
-                                    String.format("Time parameters have to be of the form {} or {}",
+                                    String.format("Time parameters have to be of the form %s or %s",
                                                   PARAMETER_WITH_DAY_DTF_STR,
                                                   PARAMETER_WITH_HOUR_DTF_STR));
 

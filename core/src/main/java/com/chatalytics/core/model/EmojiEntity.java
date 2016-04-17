@@ -38,6 +38,8 @@ public class EmojiEntity implements IMentionable {
     private String username;
     private String roomName;
 
+    protected EmojiEntity() {} // for jackson
+
     public EmojiEntity(String emoji, int occurrences, DateTime mentionTime, String username,
                        String roomName) {
         this.emoji = emoji;

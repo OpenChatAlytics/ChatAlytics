@@ -1,6 +1,7 @@
 package com.chatalytics.compute.slack.dao;
 
 import com.chatalytics.compute.util.YamlUtils;
+import com.chatalytics.core.InputSourceType;
 import com.chatalytics.core.config.ChatAlyticsConfig;
 import com.chatalytics.core.model.Message;
 import com.chatalytics.core.model.Room;
@@ -47,6 +48,7 @@ public class JsonSlackDAOTest {
     @Before
     public void setUp() throws Exception {
         this.config = YamlUtils.readYamlFromResource("chatalytics.yaml", ChatAlyticsConfig.class);
+        config.inputType = InputSourceType.SLACK;
         Client mockClient = mock(Client.class);
         mockResource = mock(WebResource.class);
         when(mockClient.resource(config.slackConfig.baseSlackURL)).thenReturn(mockResource);

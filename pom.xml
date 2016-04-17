@@ -122,6 +122,12 @@
         <version>2.7.3</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-joda</artifactId>
+        <version>2.7.3</version>
+      </dependency>
+
       <!-- Compute dependencies -->
       <dependency>
         <groupId>com.sun.jersey</groupId>
@@ -163,6 +169,16 @@
         <artifactId>tyrus-container-jdk-client</artifactId>
         <version>1.10</version>
       </dependency>
+      <dependency>
+        <groupId>javax.websocket</groupId>
+        <artifactId>javax.websocket-api</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.websocket</groupId>
+        <artifactId>javax-websocket-server-impl</artifactId>
+        <version>9.3.8.v20160314</version>
+      </dependency>
 
       <!-- End compute dependencies -->
 
@@ -184,9 +200,9 @@
         <version>1.19.1</version>
       </dependency>
       <dependency>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-servlet</artifactId>
-          <version>1.19.1</version>
+        <groupId>com.sun.jersey</groupId>
+        <artifactId>jersey-servlet</artifactId>
+        <version>1.19.1</version>
       </dependency>
 
       <!-- End web dependencies -->

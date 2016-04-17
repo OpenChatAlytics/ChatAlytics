@@ -23,6 +23,7 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -45,14 +46,16 @@ import java.util.Map;
  */
 public class EntityExtractionBolt extends BaseRichBolt {
 
-    public static final String BOLT_ID = "ENTITY_EXTRACTION_BOLT_ID";
-    private static final Logger LOG = LoggerFactory.getLogger(EntityExtractionBolt.class);
     private static final long serialVersionUID = -1586393277809132608L;
-    private static final String CHAT_ENTITY_FIELD_STR = "chat-entity";
+    private static final Logger LOG = LoggerFactory.getLogger(EntityExtractionBolt.class);
+
+    public static final String BOLT_ID = "ENTITY_EXTRACTION_BOLT_ID";
+    public static final String CHAT_ENTITY_FIELD_STR = "chat-entity";
     private static final int MAX_ENTITY_CHARS = 150;
 
     private AbstractSequenceClassifier<CoreLabel> classifier;
     private IEntityDAO entityDao;
+    private OutputCollector collector;
 
     @Override
     public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,
@@ -64,6 +67,7 @@ public class EntityExtractionBolt extends BaseRichBolt {
         if (!entityDao.isRunning()) {
             entityDao.startAsync().awaitRunning();
         }
+        this.collector = collector;
     }
 
     /**
@@ -92,6 +96,7 @@ public class EntityExtractionBolt extends BaseRichBolt {
         List<ChatEntity> entities = extractEntities(fatMessage);
         for (ChatEntity entity : entities) {
             entityDao.persistEntity(entity);
+            collector.emit(new Values(entity));
         }
     }
 

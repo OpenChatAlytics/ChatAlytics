@@ -27,7 +27,7 @@
   <logger name="org.apache.storm.shade.org.apache.curator" level="WARN"/>
   <logger name="org.apache.zookeeper" level="WARN"/>
   <logger name="org.apache.storm.shade.org.apache.zookeeper" level="WARN"/>
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE"/>
   </root>

@@ -19,7 +19,9 @@ import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
+import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
 
 import java.util.List;
 import java.util.Map;
@@ -29,9 +31,11 @@ public class EmojiCounterBolt extends BaseRichBolt {
 
     private static final long serialVersionUID = -3543087188985057557L;
     public static final String BOLT_ID = "EMOJI_COUNTER_BOLT_ID";
+    public static final String EMOJI_ENTITY_FIELD_STR = "emoji-entity";
     private static final Logger LOG = LoggerFactory.getLogger(EmojiCounterBolt.class);
 
     private IEmojiDAO emojiDao;
+    private OutputCollector collector;
 
     @Override
     public void prepare(@SuppressWarnings("rawtypes") Map conf, TopologyContext context,
@@ -39,6 +43,7 @@ public class EmojiCounterBolt extends BaseRichBolt {
         String configStr = (String) conf.get(ConfigurationConstants.CHATALYTICS_CONFIG.txt);
         ChatAlyticsConfig config = YamlUtils.readYamlFromString(configStr, ChatAlyticsConfig.class);
         emojiDao = ChatAlyticsDAOFactory.getEmojiDAO(config);
+        this.collector = collector;
     }
 
     @Override
@@ -54,6 +59,7 @@ public class EmojiCounterBolt extends BaseRichBolt {
 
         for (EmojiEntity emoji : emojis) {
             emojiDao.persistEmoji(emoji);
+            collector.emit(new Values(emoji));
         }
     }
 
@@ -121,7 +127,7 @@ public class EmojiCounterBolt extends BaseRichBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer fields) {
-        // no-output
+        fields.declare(new Fields(EMOJI_ENTITY_FIELD_STR));
     }
 
 }

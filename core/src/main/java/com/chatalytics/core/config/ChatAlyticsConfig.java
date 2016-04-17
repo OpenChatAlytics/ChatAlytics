@@ -29,6 +29,10 @@ public class ChatAlyticsConfig implements Serializable {
 
     public String persistenceUnitName = "chatalytics-db";
 
+    public final String rtComputePath = "/rtcompute";
+
+    public int rtComputePort = 9000;
+
     public HipChatConfig hipchatConfig = new HipChatConfig();
 
     public SlackConfig slackConfig = new SlackConfig();

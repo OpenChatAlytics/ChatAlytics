@@ -2,6 +2,7 @@ package com.chatalytics.compute.storm;
 
 import com.chatalytics.compute.ChatAlyticsEngineMain;
 import com.chatalytics.compute.config.ConfigurationConstants;
+import com.chatalytics.compute.realtime.ComputeRealtimeServer;
 import com.chatalytics.compute.util.YamlUtils;
 import com.chatalytics.core.config.ChatAlyticsConfig;
 import com.google.common.util.concurrent.AbstractIdleService;
@@ -24,10 +25,14 @@ public class ChatAlyticsService extends AbstractIdleService {
     private final StormTopology chatTopology;
     private LocalCluster cluster;
     private final ChatAlyticsConfig chatalyticsConfig;
+    private final ComputeRealtimeServer rtServer;
 
-    public ChatAlyticsService(StormTopology chatTopology, ChatAlyticsConfig chatalyticsConfig) {
+    public ChatAlyticsService(StormTopology chatTopology,
+                              ComputeRealtimeServer rtServer,
+                              ChatAlyticsConfig chatalyticsConfig) {
         this.chatTopology = chatTopology;
         this.chatalyticsConfig = chatalyticsConfig;
+        this.rtServer = rtServer;
     }
 
     private LocalCluster submitTopology() throws AlreadyAliveException,
@@ -46,12 +51,14 @@ public class ChatAlyticsService extends AbstractIdleService {
     }
 
     @Override
-    protected void shutDown() throws Exception {
-        cluster.shutdown();
+    protected void startUp() throws Exception {
+        rtServer.startAsync().awaitRunning();
+        cluster = submitTopology();
     }
 
     @Override
-    protected void startUp() throws Exception {
-        cluster = submitTopology();
+    protected void shutDown() throws Exception {
+        cluster.shutdown();
+        rtServer.stopAsync().awaitTerminated();
     }
 }
